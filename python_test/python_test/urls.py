@@ -16,8 +16,15 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.views.generic import TemplateView
+from django.urls import path
+from python_test import views
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', TemplateView.as_view(template_name="home.html"))
+    url(r'^$', TemplateView.as_view(template_name="home.html")),
+    path('clients/', views.index, name="client_list"),
+    path('clients/create/', views.create, name="client_create"),
+    path('clients/update/<int:client_id>/', views.update, name="client_update"),
+    path('clients/detail/<int:client_id>/', views.detail, name="client_detail")
 ]

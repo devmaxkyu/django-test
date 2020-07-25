@@ -1,8 +1,11 @@
 <a href="{% url 'client_list' %}">back to list</a>
-<form action="{% url 'client_create' %}" method="post">
+<form action="{% url 'client_update' client_id %}" method="post">
     {% csrf_token %}
     <table>
         {{ form.as_table }}
+    </table>
+    <table>
+        {{ address_form.as_table }}
     </table>
     <input type="submit" value="Submit">
 </form>

@@ -1,0 +1,33 @@
+<a href="{% url 'client_create' %}">Add new client</a>
+<table>
+    <tr>
+      <th>#</th>
+      <th>Client Name</th>
+      <th>Email Address</th>
+      <th>Phone Number</th>
+      <th>Contact Name</th>
+      <th>Address</th>
+      <th></th>
+    </tr>
+    {% if not clients %} <tr><td colspan="6">No Data<td><tr> {% endif %}
+    {% for c in clients %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ c.client_name }}</td>
+        <td>{{ c.email }}</td>
+        <td>{{ c.phone_number }}</td>
+        <td>{{ c.contact_name | default:"No Assigned" }}</td>
+        <td>
+            {% if c.address %}
+                {{ c.address.full_address | default:"No Assigned" }}
+            {% else %}
+                No Assigned
+            {% endif %}
+        </td>
+        <td>
+            <a href="{% url 'client_update' c.id %}">Modify</a> | 
+            <a href="{% url 'client_detail' c.id %}">View</a>
+        </td>
+    </tr>
+    {% endfor %}    
+  </table>

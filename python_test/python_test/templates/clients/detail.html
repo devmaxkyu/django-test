@@ -1,0 +1,22 @@
+<a href="{% url 'client_list' %}">back to list</a><br>
+
+<dl>
+    <dt>Client Name</dt>
+    <dd>{{ client.client_name }}</dd>
+    <dt>Contact Name</dt>
+    <dd>{{ client.contact_name|default:"No Assigned" }}</dd>
+    <dt>Email Address</dt>
+    <dd>{{ client.email }}</dd>
+    <dt>Phone Number</dt>
+    <dd>{{ client.phone_number }}</dd>
+    <dt>Address</dt>
+    <dd>            
+        {% if client.address %}
+            {{ client.address.full_address|default:"No Assigned" }}
+        {% else %}
+            No Assigned
+        {% endif %}
+    </dd>
+</dl>
+
+<a href="{% url 'client_update' client.id %}">modify</a>

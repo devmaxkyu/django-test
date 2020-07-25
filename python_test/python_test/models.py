@@ -1,23 +1,46 @@
-# Insert models here
+# db models
 from django.db import models
 
 class Address(models.Model):
     street = models.CharField(
         "Street Address", 
-        max_length=80
+        max_length=80,
+        null=True,
+        blank=True
     )
     suburb = models.CharField(
         "Suburb Address", 
-        max_length=80
+        max_length=80,
+        null=True,
+        blank=True
     )
-    postalcode = models.CharField(
+    postal_code = models.CharField(
         "ZIP / Postal code", 
-        max_length=12
+        max_length=12,
+        null=True,
+        blank=True
     )
     state = models.CharField(
         "State Name", 
-        max_length=50
+        max_length=50,
+        null=True,
+        blank=True
     )
+
+    @property
+    def full_address(self):
+        full_address = []
+
+        if self.street:
+            full_address.append(self.street)
+        if self.suburb:
+            full_address.append(self.suburb)
+        if self.postal_code:
+            full_address.append(self.postal_code)
+        if self.state:
+            full_address.append(self.state)
+
+        return ', '.join(full_address)
 
     class Meta:
         indexes = [
@@ -26,15 +49,15 @@ class Address(models.Model):
 
 class Client(models.Model):    
     client_name = models.CharField(
-        "Last Name", 
-        max_length=50, 
-        null=True, 
+        "Client Name", 
+        max_length=50,
         unique=True  # Unique Constraints
     )
     contact_name = models.CharField(
         "Contact Name", 
         max_length=50, 
-        null=True
+        null=True,
+        blank=True
     )
     email = models.CharField(
         "Email", 
@@ -44,9 +67,12 @@ class Client(models.Model):
     address = models.OneToOneField(
         Address,
         on_delete=models.CASCADE,
-        null=True
+        null=True,
+        blank=True
     )
     phone_number = models.CharField(
         "Phone Number", 
         max_length=50
     )
+
+
