@@ -1,13 +1,43 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
-from python_test.forms import ClientCreateForm, ClientUpdateForm, AddressForm
+from python_test.forms import ClientCreateForm, ClientUpdateForm, AddressForm, ClientSearchForm
 from python_test.models import Client
 
 # Insert views here
 
 def index(request):
-    clients = Client.objects.all()
-    return render(request, 'clients/index.html', {'clients': clients})
+    search_form = ClientSearchForm(request.GET)
+
+    clients = Client.objects
+
+    order_by, order_type = 'client_name', ''
+    
+    if search_form.is_valid():        
+
+        if search_form.cleaned_data['client_name']:
+            clients = clients.filter(
+                client_name=search_form.cleaned_data['client_name']
+            )
+        if search_form.cleaned_data['email']:
+            clients = clients.filter(
+                email=search_form.cleaned_data['email']
+            )
+        if search_form.cleaned_data['phone_number']:
+            clients = clients.filter(
+                phone_number=search_form.cleaned_data['phone_number']
+            )
+        if search_form.cleaned_data['suburb']:
+            clients = clients.filter(
+                address__suburb=search_form.cleaned_data['suburb']
+            )
+        if search_form.cleaned_data['order_by']:
+            order_by = search_form.cleaned_data['order_by']
+        if search_form.cleaned_data['order_type']:
+            order_type = search_form.cleaned_data['order_type']
+
+    clients = clients.all().order_by(order_type + order_by)
+            
+    return render(request, 'clients/index.html', {'clients': clients, 'search_from': search_form})
 
 def create(request):
     # if this is a POST request we need to process the form data

@@ -1,4 +1,10 @@
 <a href="{% url 'client_create' %}">Add new client</a>
+<br>
+<form action="{% url 'client_list' %}" method="get">
+    {{ search_from }}
+    <input type="submit" value="Submit">
+</form>
+
 <table>
     <tr>
       <th>#</th>
